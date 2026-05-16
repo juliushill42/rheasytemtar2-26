@@ -1,0 +1,116 @@
+version: "3.9"
+services:
+  rhea-orchestra:
+    container_name: rhea-orchestra
+    build: ./rhea-orchestra
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    environment:
+      RHEA_ROLE: "orchestra"
+      ORCHESTRA_PORT: "9100"
+      RHEA_BRAIN_URL: "http://rhea-brain:9101"
+      RHEA_SANCTUARY_URL: "http://rhea-sanctuary:9103"
+      RHEA_LEDGER_URL: "http://rhea-ledger:9104"
+      RHEA_CLONING_URL: "http://rhea-cloning:9102"
+      SELF_HEAL_ENABLED: "true"
+    depends_on:
+      - rhea-brain
+      - rhea-sanctuary
+      - rhea-ledger
+      - rhea-cloning
+    networks:
+      - rhea-net
+
+  rhea-brain:
+    container_name: rhea-brain
+    build: ./rhea-brain
+    restart: unless-stopped
+    ports:
+      - "9101:9101"
+    environment:
+      RHEA_ROLE: "brain"
+      BRAIN_PORT: "9101"
+      POLICY_STORE: "/policy_store"
+      GLOBAL_CONTEXT_WINDOW: "large"
+    volumes:
+      - ./storage/policy_store:/policy_store
+    networks:
+      - rhea-net
+
+  rhea-cloning:
+    container_name: rhea-cloning
+    build: ./rhea-cloning
+    restart: unless-stopped
+    ports:
+      - "9102:9102"
+    environment:
+      RHEA_ROLE: "cloning"
+      CLONING_PORT: "9102"
+      BLUEPRINT_DIR: "/blueprints"
+      RHEA_LEDGER_URL: "http://rhea-ledger:9104"
+    volumes:
+      - ./storage/blueprints:/blueprints
+    depends_on:
+      - rhea-ledger
+    networks:
+      - rhea-net
+
+  rhea-sanctuary:
+    container_name: rhea-sanctuary
+    build: ./rhea-sanctuary
+    restart: unless-stopped
+    ports:
+      - "9103:9103"
+    environment:
+      RHEA_ROLE: "sanctuary"
+      SANCTUARY_PORT: "9103"
+      QUARANTINE_DIR: "/quarantine"
+      RHEA_LEDGER_URL: "http://rhea-ledger:9104"
+    volumes:
+      - ./storage/quarantine:/quarantine
+    depends_on:
+      - rhea-ledger
+    networks:
+      - rhea-net
+
+  rhea-ledger:
+    container_name: rhea-ledger
+    build: ./rhea-ledger
+    restart: unless-stopped
+    ports:
+      - "9104:9104"
+    environment:
+      RHEA_ROLE: "ledger"
+      LEDGER_PORT: "9104"
+      AUDIT_LOG_PATH: "/ledger_db/audit.log"
+    volumes:
+      - ./storage/ledger_db:/ledger_db
+    networks:
+      - rhea-net
+
+  glass-dashboard:
+    container_name: glass-dashboard
+    build: ./glass-dashboard
+    restart: unless-stopped
+    ports:
+      - "9190:9190"
+    environment:
+      DASHBOARD_PORT: "9190"
+      ORCHESTRA_URL: "http://rhea-orchestra:9100"
+      BRAIN_URL: "http://rhea-brain:9101"
+      CLONING_URL: "http://rhea-cloning:9102"
+      SANCTUARY_URL: "http://rhea-sanctuary:9103"
+      LEDGER_URL: "http://rhea-ledger:9104"
+    depends_on:
+      - rhea-orchestra
+      - rhea-brain
+      - rhea-cloning
+      - rhea-sanctuary
+      - rhea-ledger
+    networks:
+      - rhea-net
+
+networks:
+  rhea-net:
+    driver: bridge
