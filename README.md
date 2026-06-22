@@ -1,135 +1,52 @@
 # RHEA Distributed System
-**Copyright (c) 2026 Julius Cameron Hill. All rights reserved.**
 
-## Architecture
+### 🔒 CONFIDENTIAL & PROPRIETARY DOCUMENTATION
+**Copyright (c) 2026 Julius Cameron Hill. All rights reserved.** *This document and the underlying architecture, source code substrates, and compilation blueprints are strictly proprietary and confidential. Unauthorized distribution, inspection, or duplication via external networks or corporate entities is prohibited and protected under trade secret law.*
 
-RHEA is a distributed orchestration platform with five core services:
+---
 
-### Services
+## 🏛️ System Architecture
 
-1. **Orchestra (Port 9100)** - Go traffic cop
-   - Routes requests between services
-   - Health monitoring with self-healing
-   - Service discovery and coordination
+RHEA is a highly optimized, distributed orchestration platform operating via five decoupled, zero-dependency microservices. To ensure absolute data isolation and zero runtime cross-contamination, each service runs on a dedicated, hard-locked port boundary.
 
-2. **Brain (Port 9101)** - Policy engine
-   - Decision making core
-   - Policy evaluation and enforcement
-   - Context window management
+### Core Services Matrix
 
-3. **Cloning (Port 9102)** - Blueprint manager
-   - Template replication
-   - Version control
-   - SHA-256 integrity verification
+| Service | Port | Substrate Layer | Operational Responsibility |
+| :--- | :--- | :--- | :--- |
+| **Orchestra** | `9100` | Go | Central traffic router, service discovery, and self-healing state coordination. |
+| **Brain** | `9101` | Go | Deterministic decision-making engine and active policy window management. |
+| **Cloning** | `9102` | Go | Blueprint template replication engine utilizing SHA-256 integrity loops. |
+| **Sanctuary** | `9103` | Go | Ephemeral threat quarantine layer and isolation zone boundary control. |
+| **Ledger** | `9104` | Go | Cryptographically immutable event tracking via blockchain-style verification structures. |
+| **Glass Dashboard** | `9190` | TypeScript | Real-time observability interface featuring a deterministic 5-second polling loop. |
 
-4. **Sanctuary (Port 9103)** - Isolation layer
-   - Threat quarantine
-   - Security enforcement
-   - Threat level classification
+---
 
-5. **Ledger (Port 9104)** - Audit log
-   - Immutable event tracking
-   - Blockchain-style verification
-   - Queryable audit trail
+## 💻 Technical Stack & Runtime Dependencies
 
-6. **Glass Dashboard (Port 9190)** - Monitoring UI
-   - Real-time service health
-   - TypeScript + Tailwind CSS
-   - 5-second auto-refresh
+* **Backend Substrate:** Pure Go (Compiled natively from `scratch` images to optimize isolation).
+* **Observability UI:** TypeScript + Deno + Tailwind CSS (Zero heavy Node modules overhead).
+* **Virtualization Layer:** Docker + Docker Compose V2 Engine API.
+* **Network Topography:** Completely isolated bridge networking featuring localized internal service registration.
 
-## Tech Stack
+---
 
-- **Backend**: Go (zero dependencies, scratch containers)
-- **Dashboard**: TypeScript + Deno + Tailwind CSS
-- **Container**: Docker + Docker Compose
-- **Network**: Bridge networking with service discovery
+## 🚀 Deployment & Operations
 
-## Deployment
+Manage the internal cluster architecture exclusively using local system commands from administrative terminal contexts:
 
-```bash
-# Quick start
+```powershell
+# Rapid Cluster Initialization
 ./start.sh
 
-# Manual
+# Background Daemon Instantiation
 docker-compose up -d
 
-# Rebuild
+# Parallel Multi-Core Recompilation
 docker-compose build --parallel
 
-# Logs
+# Live Substrate Event Logging
 docker-compose logs -f
 
-# Shutdown
+# Absolute Environment Teardown
 docker-compose down
-```
-
-## API Endpoints
-
-### Orchestra
-```bash
-POST /route - Route request to target service
-GET  /health - Health status
-```
-
-### Brain
-```bash
-POST /decision - Policy evaluation
-POST /policy/create - Create policy
-GET  /policy/list - List policies
-GET  /health - Health status
-```
-
-### Cloning
-```bash
-POST /create - Create blueprint
-POST /clone - Clone from blueprint
-GET  /list - List blueprints
-GET  /health - Health status
-```
-
-### Sanctuary
-```bash
-POST /quarantine - Isolate threat
-POST /release - Release from quarantine
-GET  /list - List quarantined items
-GET  /health - Health status
-```
-
-### Ledger
-```bash
-POST /audit - Log event
-POST /query - Query audit log
-GET  /verify - Verify chain integrity
-GET  /health - Health status
-```
-
-## Performance
-
-- **Build time**: < 30 seconds
-- **Container size**: < 10MB per service (Go scratch images)
-- **Memory**: < 50MB per service
-- **Startup**: < 5 seconds
-- **Latency**: < 5ms inter-service
-
-## Security
-
-- All events audited in immutable ledger
-- SHA-256 integrity verification
-- Threat isolation in Sanctuary
-- Policy-based access control
-- Zero external dependencies in Go services
-
-## Monitoring
-
-Access Glass Dashboard at http://localhost:9190
-
-Features:
-- Real-time service health
-- Latency tracking
-- Auto-refresh every 5s
-- Color-coded status indicators
-
-## License
-
-Copyright (c) 2026 Julius Cameron Hill. All rights reserved.
-Proprietary and confidential.
