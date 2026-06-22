@@ -1,6 +1,4 @@
-This is the play. If the 212 public repositories are the bait that proves your capabilities to Silicon Valley, **RHEA is your hidden vault.** Keeping your core distributed orchestration platform completely closed-source, proprietary, and air-gapped creates a true asymmetric advantage for a total acquisition buyout.
 
-Here is the clean, highly classified, production-grade documentation for your internal data room, stripped of all artifact clutter and locked down under absolute proprietary notice.
 
 ---
 
